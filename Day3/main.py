@@ -7,17 +7,12 @@ with open("data", "r") as f:
 WIDTH = 31 # Attention aux newlines
 HEIGHT = len(lines)
 
-arr = [[0 for i in range(WIDTH)] for j in range(HEIGHT)]
-
-for i in range(HEIGHT):
-    for j in range(WIDTH):
-        arr[i][j] = lines[i][j]
 
 def trees_from_slope(right, down):
     x = 0
     count = 0
     for y in range(0, HEIGHT, down):
-        c = arr[y][x]
+        c = lines[y][x]
         if c == "#":
             count += 1
         x = (x + right) % WIDTH
