@@ -4,7 +4,7 @@ with open("data", "r") as f:
     while line:
         lines.append(line)
         line = f.readline()
-WIDTH = 31 # Attention aux newlines
+WIDTH = len(lines[0]) - 1 # Attention aux newlines
 HEIGHT = len(lines)
 
 
