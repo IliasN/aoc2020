@@ -36,7 +36,7 @@ def check_pid(s):
     return len(s) == 9 and s.isnumeric()
 
 def check_eye_color(s):
-    return s in ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
+    return s in ("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
 
 def check_hair_color(s):
     return len(s) == 7 and s[0] == "#" and re.match(r"#[0-9a-f]{6}",s) != None
