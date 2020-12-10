@@ -1,7 +1,6 @@
 def parse(filename):
     with open(filename, "r") as f:
-        adapters = [int(x) for x in f if x != "\n"]
-    adapters = sorted(adapters)
+        adapters = sorted([int(x) for x in f if x != "\n"])
     adapters.append(adapters[-1] + 3)
     adapters.append(0)
     return sorted(adapters)
@@ -39,6 +38,15 @@ def valids_next(arr, i):
             break
     return ret
 
+def recursive_solve(arr, i):
+    if i == len(arr)-1:
+        return 1
+    res = 0
+    for j in range(1,4):
+        if i+j < len(arr) and arr[i+j] - arr[i] <= 3:
+            res += recursive_solve(arr, i+j)
+    return res
+
 
 print("Part 1 :")
 adapters = parse("data")
@@ -46,3 +54,6 @@ print(compute_diffs(adapters))
 print("Part 2 :")
 part2 = all_arranges(adapters)
 print(part2)
+part2rec = recursive_solve(adapters, 0)
+print(part2rec)
+assert part2 == part2rec
