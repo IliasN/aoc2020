@@ -1,10 +1,13 @@
 def parse(filename):
     with open(filename, "r") as f:
         adapters = [int(x) for x in f if x != "\n"]
+    adapters = sorted(adapters)
+    adapters.append(adapters[-1] + 3)
+    adapters.append(0)
     return sorted(adapters)
 
 def compute_diffs(arr):
-    diff = [0,1] # diff 3 starts at 1 because of our device
+    diff = [0,0] 
     last = 0
     for ad in arr:
         d = ad - last
@@ -27,23 +30,19 @@ def all_arranges(arr):
 
 
 def valids_next(arr, i):
-    ret = []
+    ret = 0
     current = arr[i]
     for x in arr[i+1:]:
         if x - current <= 3:
-            ret.append(x)
+            ret += 1
         else:
             break
-    return len(ret)
+    return ret
 
 
 print("Part 1 :")
 adapters = parse("data")
 print(compute_diffs(adapters))
-
-adapters.append(adapters[-1] + 3)
-adapters.append(0)
-adapters = sorted(adapters)
-test = all_arranges(adapters)
-
-print(test)
+print("Part 2 :")
+part2 = all_arranges(adapters)
+print(part2)
