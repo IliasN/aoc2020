@@ -1,3 +1,5 @@
+import functools
+
 def parse(filename):
     with open(filename, "r") as f:
         adapters = sorted([int(x) for x in f if x != "\n"])
@@ -38,22 +40,26 @@ def valids_next(arr, i):
             break
     return ret
 
-def recursive_solve(arr, i):
+# python 3.9 utiliser @functools.cache
+@functools.lru_cache(maxsize=None)
+def recursive_solve(i):
     if i == len(arr)-1:
         return 1
     res = 0
     for j in range(1,4):
         if i+j < len(arr) and arr[i+j] - arr[i] <= 3:
-            res += recursive_solve(arr, i+j)
+            res += recursive_solve(i+j)
     return res
 
 
 print("Part 1 :")
 adapters = parse("data")
+arr = adapters
 print(compute_diffs(adapters))
 print("Part 2 :")
 part2 = all_arranges(adapters)
 print(part2)
-part2rec = recursive_solve(adapters, 0)
+part2rec = recursive_solve(0)
 print(part2rec)
 assert part2 == part2rec
+print("Recursive and linear are equal")
