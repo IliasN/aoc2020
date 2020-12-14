@@ -40,8 +40,8 @@ def valids_next(arr, i):
             break
     return ret
 
-# python 3.9 utiliser @functools.cache
-@functools.lru_cache(maxsize=None)
+#@functools.lru_cache(maxsize=None) python3.8
+@functools.cache # python3.9
 def recursive_solve(i):
     if i == len(arr)-1:
         return 1

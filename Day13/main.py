@@ -25,16 +25,14 @@ def get_values_remainder(arr):
 def chinese_remainder(ids):
     data = get_values_remainder(ids)
     result = 0
-    final_mod = 1
+    n = 1
     for value, remainder in data:
-        final_mod *= value
-        prod = 1
-        for value_i, _ in data:
-            if value_i != value:
-                prod *= value_i
+        n *= value
+    for value, remainder in data:
+        prod = n // value
         mod_n = mod_inv(prod, value)
         result += prod * remainder * mod_n
-    return result % final_mod
+    return result % n
 
 def mod_inv(a, m):
     a = a % m
