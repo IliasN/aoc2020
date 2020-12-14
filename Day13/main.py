@@ -19,14 +19,14 @@ def get_values_remainder(arr):
         if x == "x":
             continue
         val = int(x)
-        data.append((val, val - i))
+        data.append((val, (val - i) % val))
     return data
 
 def chinese_remainder(ids):
     data = get_values_remainder(ids)
     result = 0
     n = 1
-    for value, remainder in data:
+    for value, _ in data:
         n *= value
     for value, remainder in data:
         prod = n // value
