@@ -5,7 +5,7 @@ def parse(filename: str) -> list:
 
 
 class Memory:
-    def __init__(self, instructions):
+    def __init__(self, instructions: list):
         self.instructions = instructions.copy()
         self.mem_len = self.get_len()
         self.mem = [0] * (self.mem_len + 1)
@@ -38,15 +38,10 @@ class Memory:
         return sum(self.mem)
 
 class Memory2:
-    def __init__(self, instructions):
+    def __init__(self, instructions: list):
         self.instructions = instructions.copy()
-        #self.mem_len = self.get_len()
-        #self.mem = [0] * self.mem_len
         self.mem = dict()
         self.mask = ""
-
-    def get_len(self) -> int:
-        return max( int(x.split("[")[1].split("]")[0]) for x in self.instructions if "mem" in x)
 
     def run(self) -> None:
         for instr in self.instructions:
@@ -67,13 +62,7 @@ class Memory2:
         self.bit_combi(combis, nb_s, 0, list())
         for co in combis:
             addr = self.addr_from_array(addr_s, co)
-            #if addr >= len(self.mem):
-                #self.resize_mem(addr)
             self.mem[addr] = value
-
-    def resize_mem(self, addr: int) -> None:
-        concat_arr = [0] * (addr - len(self.mem) + 1)
-        self.mem = self.mem + concat_arr
 
     @staticmethod
     def addr_from_array(addr_s: str, arr: list) -> int:
@@ -89,10 +78,10 @@ class Memory2:
 
 
 
-    def set_mask(self, s: str):
+    def set_mask(self, s: str) -> None:
         self.mask = s
 
-    def get_sum(self):
+    def get_sum(self) -> int:
         return sum(list(self.mem.values()))
     
     @staticmethod
