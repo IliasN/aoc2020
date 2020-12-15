@@ -1,4 +1,17 @@
+import time
+
 inp = [1,0,16,5,17,4]
+
+def solve_up(arr: list, limit: int) -> int:
+    last_seen = dict()
+    for i in range(limit - 1):
+        if len(arr) - 1 == i:
+            if arr[i] in last_seen:
+                arr.append(i - last_seen[arr[i]])
+            else:
+                arr.append(0)
+        last_seen[arr[i]] = i
+    return arr[-1]
 
 def solve1(arr: list, limit: int) -> int:
     seen = set()
@@ -20,8 +33,18 @@ def index_from_end(arr: list, value : int) -> int:
     return arr[::-1].index(value) + 1
 
 
-res1 = solve1(inp.copy(), 2020)
-print(res1)
 
-res2 = solve1(inp.copy(), 30000000)
-print(res2)
+start = time.time()
+res1 = solve1(inp.copy(), 30000000)
+end = time.time()
+
+print(f"Solution 1 : {end-start}s")
+
+start = time.time()
+res2 = solve_up(inp.copy(), 30000000)
+end = time.time()
+
+print(f"Solution 2 : {end-start}s")
+
+assert res1 == 573522
+assert res2 == 573522
