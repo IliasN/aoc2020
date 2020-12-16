@@ -12,17 +12,18 @@ def solve1(tickets: list, rules: dict) -> int:
     rate = 0
     for ticket in tickets:
         for n in ticket:
-            rate += check_n(n, rules)
+            if not check_n(n, rules):
+                rate += n
     return rate
 
-def check_n(n: int, rules: dict) -> int:
+def check_n(n: int, rules: dict) -> bool:
     for key in rules:
         rule1 = tuple(map(int, rules[key][0].split("-")))
         rule2 = tuple(map(int, rules[key][1].split("-")))
         if rule1[0] <= n <= rule1[1] or rule2[0] <= n <= rule2[1]:
-            # BIG MISTAKE RIGHT HERE BECAUSE OF THE UNIQUE 0 IN THE WHOLE LIST OF TICKETS -> 2-3 HOURS OF DEBUGGING
-            return 0
-    return n
+            # MISTAKE FIXED :)
+            return True
+    return False
 
 def get_faulty(n: int, rules: dict) -> list:
     faultys = []
@@ -31,7 +32,6 @@ def get_faulty(n: int, rules: dict) -> list:
         rule2 = tuple(map(int, rules[key][1].split("-")))
         if rule1[0] <= n <= rule1[1] or rule2[0] <= n <= rule2[1]:
             continue
-            print("True")
         else:
             faultys.append(key)
     return faultys
@@ -41,8 +41,7 @@ def solve2(tickets: list, rules: dict) -> list:
     for ticket in tickets:
         valid = True
         for n in ticket:
-            check = check_n(n, rules)
-            if check or n == 0:
+            if not check_n(n, rules):
                 valid = False
         if valid:
             valids.append(ticket)
