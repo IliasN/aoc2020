@@ -64,7 +64,7 @@ def solve2(tickets: list, rules: dict) -> list:
     return possible
 
 def reduce_fields(fields: list) -> list:
-    while sum(len(x) for x in fields) != 20:
+    while sum(len(x) for x in fields) != len(fields):
         for f in fields:
             if len(f) == 1:
                 todel = f[0]
