@@ -1,4 +1,6 @@
 import copy
+import math
+
 class Image:
     def __init__(self, ident: str, pixels: list, modif:str = ""):
         self.ident = ident
@@ -80,9 +82,23 @@ def parse(filename: str) -> list:
         imglist.append(img)
     return imglist
 
+def get_match(src, side, imglist):
+    for img in imglist:
+        if img.ident == src.ident:
+            continue
+        if side in img.get_sides() or side[::-1] in img.get_sides():
+            return img
+    return None
+
+def rotate(arr):
+    newpix = copy.deepcopy(arr)
+    for j in range(len(arr)):
+        for i in range(len(arr)):
+            newpix[j][i] = arr[len(arr) - i - 1][j]
+    return newpix
+
 result = 1
 imglist = parse("data")
-print(len(imglist))
 for img in imglist:
     sides = list()
     for im in imglist:
@@ -96,4 +112,62 @@ for img in imglist:
     if count == 2:
         result *= img.ident
         print(img.ident)
+        corner = img
 print(f"Part 1 : {result}")
+full_size = int(math.sqrt(len(imglist)))
+full_img = [ [None for x in range(full_size) ] for y in range(full_size) ]
+while get_match(corner, corner.get_bot(), imglist) == None and get_match(corner, corner.get_right(), imglist) == None:
+    corner = corner.rotate()
+full_img[0][0] = corner
+for j in range(full_size):
+    for i in range(full_size):
+        if i == 0 and j == 0:
+            continue
+        if i == 0:
+            above = full_img[j - 1][0]
+            candid = get_match(above, above.get_bot(), imglist)
+            while candid.get_top() != above.get_bot() and candid.get_top()[::-1] != above.get_bot():
+                candid = candid.rotate()
+            if candid.get_top() != above.get_bot():
+                candid = candid.flip_horizontal()
+            full_img[j][i] = candid
+        else:
+            above = full_img[j][i - 1]
+            candid = get_match(above, above.get_right(), imglist)
+            while candid.get_left() != above.get_right() and candid.get_left()[::-1] != above.get_right():
+                candid = candid.rotate()
+            if candid.get_left() != above.get_right():
+                candid = candid.flip_vertical()
+            full_img[j][i] = candid
+
+part_size = corner.width - 2
+all_pix_n = part_size * full_size
+all_pix = [ [0 for x in range(all_pix_n) ] for y in range(all_pix_n) ]
+for j in range(full_size):
+    for i in range(full_size):
+        for y in range(part_size):
+            for x in range(part_size):
+                all_pix[j * part_size + y][i * part_size + x] = full_img[j][i].pixels[1+y][1+x]
+d = ["                  # ", "#    ##    ##    ###", " #  #  #  #  #  #   "]
+
+
+for _ in range(3): # bruteforce final rotation
+    all_pix = rotate(all_pix)
+
+total = 0
+count = 0
+for j in range(all_pix_n):
+    for i in range(all_pix_n):
+        if all_pix[j][i] == 1:
+            total += 1
+        valid = True
+        for dj in range(3):
+            for di in range(len(d[0])):
+                if j + dj < all_pix_n and i + di < all_pix_n:
+                    if d[dj][di] == "#" and all_pix[j + dj][i + di] != 1:
+                        valid = False
+                else:
+                    valid = False
+        if valid:
+            count += 1
+print(f"Part 2 : {count} monsters water roughness {total - 15 * count}")
