@@ -1,6 +1,7 @@
 input_data = list(map(int, "398254716"))
 test_data = list(map(int, "389125467"))
 
+
 class Node:
     def __init__(self, value):
         self.value = value
@@ -9,7 +10,7 @@ class Node:
     def print(self):
         print(self.value, end="")
         curr = self.n
-        while curr != None and curr != self:
+        while curr is not None and curr != self:
             print(curr.value, end="")
             curr = curr.n
         print()
@@ -17,15 +18,16 @@ class Node:
     def __iter__(self):
         yield self.value
         curr = self.n
-        while curr != None and curr != self:
+        while curr is not None and curr != self:
             yield curr.value
             curr = curr.n
 
     def with_value(self, target):
         curr = self.n
-        while curr.value != target and curr != None and curr != self:
+        while curr.value != target and curr is not None and curr != self:
             curr = curr.n
         return curr
+
 
 def million(arr):
     arrc = arr.copy()
@@ -34,6 +36,7 @@ def million(arr):
         arrc.append(value)
         value += 1
     return arrc
+
 
 def list_from_arr(arr):
     mydict = dict()
@@ -46,6 +49,7 @@ def list_from_arr(arr):
         mydict[curr.value] = curr
     curr.n = root
     return root, mydict
+
 
 def solve1(circ, mydict, n, mini, maxi):
     curr = circ
@@ -70,7 +74,7 @@ def solve1(circ, mydict, n, mini, maxi):
         dest_node = mydict[dest_value]
         removed.n.n.n = dest_node.n
         dest_node.n = removed
-        curr = curr.n # laisser à la fin
+        curr = curr.n  # laisser à la fin
 
 
 newdata = million(input_data)
